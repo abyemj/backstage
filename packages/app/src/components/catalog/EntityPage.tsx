@@ -56,6 +56,18 @@ import {
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
 
+import { EntityCircleCIContent, isCircleCIAvailable} from '@backstage/plugin-circleci';
+
+import { isGitlabAvailable, EntityGitlabContent, EntityGitlabLanguageCard, EntityGitlabPeopleCard,
+    EntityGitlabReleasesCard,
+    EntityGitlabMergeRequestsTable,
+    EntityGitlabMergeRequestStatsCard,
+    EntityGitlabPipelinesTable,
+} from '@immobiliarelabs/backstage-plugin-gitlab';
+
+import { EntityGithubPullRequestsContent } from '@roadiehq/backstage-plugin-github-pull-requests';
+import { EntityGithubPullRequestsOverviewCard } from '@roadiehq/backstage-plugin-github-pull-requests';
+
 const techdocsContent = (
   <EntityTechdocsContent>
     <TechDocsAddons>
@@ -71,6 +83,11 @@ const cicdContent = (
     <EntitySwitch.Case if={isGithubActionsAvailable}>
       <EntityGithubActionsContent />
     </EntitySwitch.Case>
+
+   <EntitySwitch.Case if={isCircleCIAvailable}>
+      <EntityCircleCIContent />
+    </EntitySwitch.Case>
+
 
     <EntitySwitch.Case>
       <EmptyState
@@ -117,6 +134,9 @@ const overviewContent = (
     <Grid item md={6}>
       <EntityAboutCard variant="gridItem" />
     </Grid>
+    <Grid item md={6}>
+      <EntityGithubPullRequestsOverviewCard />
+    </Grid>
     <Grid item md={6} xs={12}>
       <EntityCatalogGraphCard variant="gridItem" height={400} />
     </Grid>
@@ -127,7 +147,31 @@ const overviewContent = (
     <Grid item md={8} xs={12}>
       <EntityHasSubcomponentsCard variant="gridItem" />
     </Grid>
-  </Grid>
+	<EntitySwitch>
+            <EntitySwitch.Case if={isGitlabAvailable}>
+                <Grid item sm={12} md={3} lg={3}>
+                    <EntityGitlabPeopleCard />
+                </Grid>
+                <Grid item sm={12} md={3} lg={3}>
+                    <EntityGitlabLanguageCard />
+                </Grid>
+                <Grid item sm={12} md={3} lg={3}>
+                    <EntityGitlabMergeRequestStatsCard />
+                </Grid>
+                <Grid item sm={12} md={3} lg={3}>
+                    <EntityGitlabReleasesCard />
+                </Grid>
+                <Grid item md={12}>
+                    <EntityGitlabPipelinesTable />
+                </Grid>
+                <Grid item md={12}>
+                    <EntityGitlabMergeRequestsTable />
+                </Grid>
+            </EntitySwitch.Case>
+        </EntitySwitch> 
+
+
+ </Grid>
 );
 
 const serviceEntityPage = (
@@ -165,7 +209,17 @@ const serviceEntityPage = (
     <EntityLayout.Route path="/docs" title="Docs">
       {techdocsContent}
     </EntityLayout.Route>
-  </EntityLayout>
+  
+    <EntityLayout.Route if={isGitlabAvailable} path="/gitlab" title="Gitlab" >
+      <EntityGitlabContent />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/pull-requests" title="Pull Requests">
+      <EntityGithubPullRequestsContent />
+    </EntityLayout.Route>
+
+ </EntityLayout>
+
 );
 
 const websiteEntityPage = (

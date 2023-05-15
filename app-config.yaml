@@ -44,6 +44,10 @@ integrations:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
     #   token: ${GHE_TOKEN}
+  gitlab:
+    - host: gitlab.com
+      token: glpat-o336na9fzTuxMcuzyZer
+
 
 proxy:
   ### Example for how to add a proxy endpoint for the frontend.
@@ -51,6 +55,10 @@ proxy:
   # '/test':
   #   target: 'https://example.com'
   #   changeOrigin: true
+  '/circleci/api':
+    target: https://circleci.com/api/v1.1
+    headers:
+      Circle-Token: ${CIRCLECI_AUTH_TOKEN}
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
 # Note: After experimenting with basic setup, use CI/CD to generate docs
@@ -65,7 +73,12 @@ techdocs:
 
 auth:
   # see https://backstage.io/docs/auth/ to learn about auth providers
-  providers: {}
+  environment: development
+  providers:
+    github:
+      development:
+        clientId: 1e3d20b6b36231094699
+        clientSecret: c7b6e046158750f79809b4ebaacb014c7ef18b31
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
@@ -76,22 +89,22 @@ catalog:
     pullRequestBranchName: backstage-integration
   rules:
     - allow: [Component, System, API, Resource, Location]
-  locations:
+ # locations:
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
-    - type: file
-      target: ../../examples/entities.yaml
+  #  - type: file
+   #   target: ../../examples/entities.yaml
 
     # Local example template
-    - type: file
-      target: ../../examples/template/template.yaml
-      rules:
-        - allow: [Template]
+   # - type: file
+    #  target: ../../examples/template/template.yaml
+     # rules:
+      #  - allow: [Template]
 
     # Local example organizational data
-    - type: file
-      target: ../../examples/org.yaml
-      rules:
-        - allow: [User, Group]
+   # - type: file
+    #  target: ../../examples/org.yaml
+     # rules:
+      #  - allow: [User, Group]
 
     ## Uncomment these lines to add more example data
     # - type: url

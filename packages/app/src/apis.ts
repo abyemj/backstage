@@ -9,6 +9,29 @@ import {
   createApiFactory,
 } from '@backstage/core-plugin-api';
 
+import { GitlabCIApiRef } from '@immobiliarelabs/backstage-plugin-gitlab';
+import { CustomGitlabCIClient } from '@immobiliarelabs/backstage-plugin-gitlab';
+import { discoveryApiRef } from '@backstage/core-plugin-api';
+
+
+/*export const apis: AnyApiFactory[] = [
+    createApiFactory({
+        api: GitlabCIApiRef,
+        deps: { configApi: configApiRef, discoveryApi: discoveryApiRef },
+        factory: ({ configApi, discoveryApi }) =>
+            CustomGitlabCIClient.setupAPI({
+                discoveryApi,
+                codeOwnersPath: configApi.getOptionalString(
+                    'gitlab.defaultCodeOwnersPath'
+                ),
+            }),
+    }),
+];*/
+
+
+
+
+
 export const apis: AnyApiFactory[] = [
   createApiFactory({
     api: scmIntegrationsApiRef,
@@ -17,3 +40,4 @@ export const apis: AnyApiFactory[] = [
   }),
   ScmAuth.createDefaultApiFactory(),
 ];
+
