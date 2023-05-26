@@ -25,7 +25,7 @@ import { PluginEnvironment } from './types';
 import { ServerPermissionClient } from '@backstage/plugin-permission-node';
 import { DefaultIdentityClient } from '@backstage/plugin-auth-node';
 import gitlab from './plugins/gitlab';
-
+import permission from './plugins/permission';
 
 function makeCreateEnv(config: Config) {
   const root = getRootLogger();
@@ -33,7 +33,8 @@ function makeCreateEnv(config: Config) {
   const discovery = SingleHostDiscovery.fromConfig(config);
   const cacheManager = CacheManager.fromConfig(config);
   const databaseManager = DatabaseManager.fromConfig(config, { logger: root });
-  const tokenManager = ServerTokenManager.noop();
+  // const tokenManager = ServerTokenManager.noop();
+  const tokenManager = ServerTokenManager.fromConfig(config, { logger: root });
   const taskScheduler = TaskScheduler.fromConfig(config);
 
   const identity = DefaultIdentityClient.create({
@@ -81,6 +82,7 @@ async function main() {
   const searchEnv = useHotMemoize(module, () => createEnv('search'));
   const appEnv = useHotMemoize(module, () => createEnv('app'));
   const gitlabEnv = useHotMemoize(module, () => createEnv('gitlab'));
+  const permissionEnv = useHotMemoize(module, () => createEnv('permission'));
 
   const apiRouter = Router();
   apiRouter.use('/catalog', await catalog(catalogEnv));
@@ -90,7 +92,8 @@ async function main() {
   apiRouter.use('/proxy', await proxy(proxyEnv));
   apiRouter.use('/search', await search(searchEnv));
   apiRouter.use('/gitlab', await gitlab(gitlabEnv)); 
-  // Add backends ABOVE this line; this 404 handler is the catch-all fallback
+  apiRouter.use('/permission', await permission(permissionEnv));apiRouter.use('/permission', await permission(permissionEnv)); 
+ // Add backends ABOVE this line; this 404 handler is the catch-all fallback
   apiRouter.use(notFoundHandler());
 
 
