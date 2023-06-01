@@ -17,8 +17,11 @@ class TestPermissionPolicy implements PermissionPolicy {
         result: AuthorizeResult.DENY,
       };
     }
+
+    return { result: AuthorizeResult.ALLOW };
+  }
 }
-}
+
 export default async function createPlugin(
   env: PluginEnvironment,
 ): Promise<Router> {
