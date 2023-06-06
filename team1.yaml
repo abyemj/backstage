@@ -1,7 +1,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:
-  name: team-001
+  name: team1
   description: Team 1
 spec:
   type: team
@@ -21,7 +21,7 @@ spec:
     # Intentional no displayName for testing
     email: rasheed@gmail.com
     picture: https://avatars.dicebear.com/api/avataaars/breanna-davison@example.com.svg?background=%23fff
-  memberOf: [team-001]
+  memberOf: [team1]
 ---
 apiVersion: backstage.io/v1alpha1
 kind: User
@@ -32,18 +32,18 @@ spec:
     displayName: Elias A
     email: elias@gmail.com
     picture: https://avatars.dicebear.com/api/avataaars/janelle-dawe@example.com.svg?background=%23fff
-  memberOf: [team-001]
+  memberOf: [team1]
 ---
 apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
-  name: afa
+  name: abyemj
 spec:
   profile:
     displayName: afa a
     email: afa.abyem@gmail.com
     picture: https://avatars.dicebear.com/api/avataaars/nigel-manning@example.com.svg?background=%23fff
-  memberOf: [team-001]
+  memberOf: [team1]
 ---
 # This user is added as an example, to make it more easy for the "Guest"
 # sign-in option to demonstrate some entities being owned. In a regular org,
@@ -51,7 +51,7 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
-  name: guest
+  name: user:guest
 spec:
   profile:
     displayName: Guest User
