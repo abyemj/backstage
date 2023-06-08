@@ -21,6 +21,9 @@ import {
 import {
   catalogEntityDeletePermission,
 } from '@backstage/plugin-catalog-common/alpha';
+import {
+  catalogEntityReadPermission,
+} from '@backstage/plugin-catalog-common/alpha';
 
 
 
