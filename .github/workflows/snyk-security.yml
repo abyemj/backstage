@@ -2,7 +2,7 @@ name: Snyk Security
 
 on:
   push:
-    branches: ["main" ]
+    branches: ["main"]
   pull_request:
     branches: ["main"]
 
@@ -15,14 +15,21 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Run Snyk to check for vulnerabilities
+        id: snyk
         uses: snyk/actions/node@master
-        continue-on-error: true # To make sure that SARIF upload gets called
+        continue-on-error: true # To make sure file is generated
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --sarif-file-output=snyk.sarif
-      - name: Download SARIF file
+          args: --json-file-output=snyk-results.json
+      - name: Download Snyk Results
         uses: actions/upload-artifact@v2
         with:
-          name: snyk-sarif
-          path: snyk.sarif
+          name: snyk-results
+          path: snyk-results.json
+      - name: Print Snyk Test Status
+        run: |
+          echo "Snyk Test Status:"
+          echo "-----------------"
+          echo "Issues Found: ${{ steps.snyk.outputs.issuesFound }}"
+          echo "Return Code: $?"
