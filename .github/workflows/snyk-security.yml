@@ -17,7 +17,7 @@ jobs:
       - name: Run Snyk to check for vulnerabilities
         id: snyk
         uses: snyk/actions/node@master
-        continue-on-error: true # To make sure file is generated
+        # continue-on-error: true # To make sure file is generated
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
